@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+<div id="app" style="background: red;">
+    <p>13456</p>
+    占位{{obj.n}}--{{computedName}}占位
+    <my-button></my-button>
+</div>
+<script src="dist/vue.js"></script>
+<script>
+    Vue.mixin({
+      beforeCreate() {
+          console.log('mixin传入的beforeCreate1')
+      }
+    }).mixin({
+        beforeCreate() {
+            console.log('mixin传入的beforeCreate2')
+        }
+    })
+
+    Vue.component('my-button', {
+      template: '<button>hello</button>'
+    })
+
+    var vm = new Vue({
+        // el: '#app',
+        data: {
+            name: 'tom',
+            obj: {n: 1, n2: '$del'},
+            arr: [{a: 'a1'}, {b: 'b1'}, {c: 'b2'}],
+        },
+
+        computed: {
+          computedName() {
+            return this.name
+          }
+        },
+
+        watch: {
+          'obj.n'(newV, oldV) {
+            console.log("🚀 newV, oldV", newV, oldV)
+          }
+        },
+
+        components: {
+          'my-button': {
+            template: '<button>world</button>',
+          }
+        },
+
+        beforeCreate() {
+          console.log('组件本身的beforeCreate')
+        },
+
+        created() {
+          console.log('组件本身的created')
+        },
+        
+        beforeMount() {
+          console.log('组件本身的beforeMount')
+        },
+        
+        mounted() {
+          console.log('组件本身的mounted', this.$el)
+        }
+    })
+
+    
+    vm.$mount('#app')
+    
+    setTimeout(() => {
+      vm.obj.n = 2
+      vm.$del(vm.obj, 'n2')
+      vm.name = 'Bob'
+    }, 2000)
+    
+    console.log("🚀 vm", vm)
+</script>
+
+</body>
+</html>
