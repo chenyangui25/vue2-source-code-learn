@@ -8,11 +8,8 @@ export default {
         sourcemap:true, // es5 -> es6源代码
     },
     plugins:[
-        babel({ // 使用babel进行转化 但是拍出node_modules 文件
-            exclude:'node_modules/**', // glob 语法
+        babel({ // 使用babel进行转化
+            exclude:'node_modules/**',
         })
     ]
 }
-
-
-// 后续 需要打包不同的类型 可以写个列表，循环打包
